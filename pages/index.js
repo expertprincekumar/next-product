@@ -1,23 +1,21 @@
-import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-import Link from 'next/link'
-import { startClock } from '../actions'
-import Examples from '../components/examples'
+import { getAllProductData } from "../services/getAllData";
+import ProductList from "../components/productList";
 
-const Index = () => {
-  const dispatch = useDispatch()
-  useEffect(() => {
-    dispatch(startClock())
-  }, [dispatch])
-
+const Home = ({ allProductsData }) => {
   return (
     <>
-      <Examples />
-      <Link href="/show-redux-state">
-        <a>Click to see current Redux State</a>
-      </Link>
+      <ProductList allProductsData={allProductsData} />
     </>
-  )
+  );
+};
+
+export async function getStaticProps() {
+  const allProductsData = await getAllProductData();
+  return {
+    props: {
+      allProductsData,
+    },
+  };
 }
 
-export default Index
+export default Home;
